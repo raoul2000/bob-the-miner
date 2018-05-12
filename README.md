@@ -10,7 +10,19 @@ npm install
 ```
 # Test
 
-First start the test local server :
+Test are based on [Mocha](https://mochajs.org/) which is supposed to be installed *globally* and accessible on your environment.
+If you need to install Mocha :
+
+```
+$ npm install --global mocha
+```
+
+To check it is installed, display its version number:
+```
+> mocha --version
+2.4.5            
+```
+Now you are ready to run tests. First start the test local server :
 ```
 npm run server
 ```
