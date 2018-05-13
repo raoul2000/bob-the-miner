@@ -16,7 +16,7 @@ Test are based on [Mocha](https://mochajs.org/) which is supposed to be installe
 If you need to install Mocha :
 
 ```
-$ npm install --global mocha
+npm install --global mocha
 ```
 
 To check it is installed, display its version number:
@@ -54,9 +54,21 @@ npm run npm-crawler
 
 # Documentation
 
-Documentation is based on [vuepress](https://vuepress.vuejs.org).
+Documentation is based on [vuepress](https://vuepress.vuejs.org) that is assumed to be globally installed. If that's not the case, install it :
+
+```
+$ npm install --global vuepress
+```
+
+To view the documentation :
 
 ```
 npm run docs:dev
+```
+
+To build the documentation :
+```
 npm run docs:build
 ```
+
+Then copy the generated files from `docs/.vuepress/dist` to another (temporary) folder outside of the project, switch the the branch **gh-pages** and copy back the files. Then commit and push.
