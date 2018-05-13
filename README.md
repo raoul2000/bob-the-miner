@@ -5,11 +5,20 @@ What about [reading the doc ?](https://raoul2000.github.io/bob-the-miner/)
 
 # Install
 
+To use Bob in your one project :
+
+```
+npm install bob-the-miner
+```
+
+If you want to contribute :
+
 ```
 git clone https://github.com/raoul2000/bob-the-miner.git
 cd bob-the-miner
 npm install
 ```
+
 # Test
 
 Test are based on [Mocha](https://mochajs.org/) which is supposed to be installed *globally* and accessible on your environment.
