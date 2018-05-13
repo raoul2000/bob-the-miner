@@ -1,6 +1,8 @@
 
 > What ? another web scraper ? ...yeah, that's Bob !
 
+What about [reading the doc ?](https://raoul2000.github.io/bob-the-miner/)
+
 # Install
 
 ```
