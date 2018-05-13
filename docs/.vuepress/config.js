@@ -1,5 +1,6 @@
 module.exports = {
   title: 'Bob The Miner',
+  base : '/bob-the-miner/',
   description: 'A new Web scraper ready to work for you !',
   themeConfig: {
     sidebar: [
