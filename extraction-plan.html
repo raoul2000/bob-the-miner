@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bob The Miner | The Extraction Plan</title>
+    <meta name="description" content="A new Web scraper ready to work for you !">
+    
+    
+    <link rel="preload" href="/bob-the-miner/assets/css/4.styles.021bac94.css" as="style"><link rel="preload" href="/bob-the-miner/assets/js/app.d55ff3db.js" as="script"><link rel="preload" href="/bob-the-miner/assets/js/2.0cd49815.js" as="script"><link rel="prefetch" href="/bob-the-miner/assets/js/0.74f77579.js"><link rel="prefetch" href="/bob-the-miner/assets/js/1.9380be0a.js"><link rel="prefetch" href="/bob-the-miner/assets/js/3.ec8e4885.js">
+    <link rel="stylesheet" href="/bob-the-miner/assets/css/4.styles.021bac94.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div><a href="/bob-the-miner/" class="home-link router-link-active"><!----><span class="site-name">
+      Bob The Miner
+    </span></a><div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""><!----></div><!----></div></header><div class="sidebar-mask"></div><div class="sidebar"><!----><ul class="sidebar-links"><li><a href="/bob-the-miner/" class="sidebar-link">Home</a></li><li><a href="/bob-the-miner/intro.html" class="sidebar-link">Introduction</a></li><li><a href="/bob-the-miner/itinerary.html" class="sidebar-link">Itinerary</a></li><li><a href="/bob-the-miner/extraction-plan.html" class="active sidebar-link">Extraction Plan</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/bob-the-miner/extraction-plan.html#a-simple-selector" class="sidebar-link">A Simple Selector</a></li><li class="sidebar-sub-header"><a href="/bob-the-miner/extraction-plan.html#a-complex-extraction-plan" class="sidebar-link">A Complex Extraction Plan</a></li></ul></li></ul></div><div class="page"><div class="content"><h1 id="the-extraction-plan"><a href="#the-extraction-plan" aria-hidden="true" class="header-anchor">#</a> The Extraction Plan</h1><blockquote><p>The <em>Extraction plan</em> is where you tell bob what to extract from a web page</p></blockquote><h2 id="a-simple-selector"><a href="#a-simple-selector" aria-hidden="true" class="header-anchor">#</a> A Simple Selector</h2><p>As we already saw, the most simple extraction plan is a <a href="https://api.jquery.com/category/selectors/" target="_blank" rel="noopener noreferrer">JQuery Selector</a> that is evaluated on the
+page. The extracted value is the text value of the first matching element.</p><pre class="language-js"><code>bob<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span>
+  <span class="token string">&quot;http://hostname/path/post-01.html&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;div.content &gt; div.post &gt; h1&quot;</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><p>In this case, the result is a simple string.</p><p>If you want to extract more than one simple value using a selector, just provide an array
+where each item is a selector. Again, only the first matching element for each selector
+will be returned.</p><pre class="language-js"><code>bob<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span>
+  <span class="token string">&quot;http://hostname/path/post-01.html&quot;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token string">&quot;div.content &gt; div.post &gt; h1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;div.content &gt; div.post &gt; p.body&quot;</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><p>You will receive an array of strings, where the first one is the title of the post, and the second
+one, the body of the post.</p><p>But ok, this is quite basic right ? Bob can also provide a complete object if you tell him how to
+do. We will see that on the next chapter.</p><h2 id="a-complex-extraction-plan"><a href="#a-complex-extraction-plan" aria-hidden="true" class="header-anchor">#</a> A Complex Extraction Plan</h2><p>If you want Bob to produce an object instead of a simple text value, you can give him an extraction
+plan describing exactly this object. Here is an example... Are you able to understand it ?</p><pre class="language-js"><code>bob<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span>
+  <span class="token string">&quot;http://hostname/path/post-01.html&quot;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token string">&quot;postList&quot;</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">&quot;selector&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;div.content &gt; div.post&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;type&quot;</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+        <span class="token string">&quot;title&quot;</span><span class="token punctuation">:</span> <span class="token string">'.post-header &gt; h3.title'</span>
+        <span class="token string">&quot;body&quot;</span> <span class="token punctuation">:</span>  <span class="token string">'div.excerpt'</span>
+      <span class="token punctuation">}</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><p>The object we ask Bob to build has one property named <em>postList</em>. This property is
+an <em>array</em> (that's its <em>type</em>) that contains objects representings posts. Each object in this array has 2 properties.</p><ul><li><em>title</em> : a string representing the title of the post</li><li><em>body</em> : a string representing the content of the post</li></ul><p>Here is how the result could look like :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;source&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;http://hostname/path/post-01.html&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;data&quot;</span>   <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;postList&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot; some title&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;body&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;lorem ipsum etc ...&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot; some other title&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;body&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;let it be etc.&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot; the last title&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;body&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;Bob is in da place !&quot;</span><span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><p>An object is made of <strong>properties</strong>, and we are going to see now how to describe them to Bob.</p><p>For a given <em>propertyName</em> its definition can be provided as an object :</p><pre class="language-text"><code>{
+  &quot;propertyName&quot; : {
+    &quot;selector&quot; : &quot;jquery selector&quot;,
+    &quot;type&quot; :
+       &quot;text&quot;  |  &quot;html&quot;  |  &quot;@attributeName&quot;  |  { object } |
+      [&quot;text&quot;] | [&quot;html&quot;] | [&quot;@attributeName&quot;] | [{ object }]
+  }
+}
+</code></pre><p>If the property value is a string, then it is assumed to be the selector. If it's an array, it must contain
+one single item assumed to be the selector. The property type is an array.</p><p>The <em>selector</em> value is a JQuery selector.</p><p>The <em>type</em> value is describing how to get a value based on the selected element.</p><p>If no <strong>type</strong> is provided, <strong>text</strong> is default.</p><h3 id="primitive-type-property"><a href="#primitive-type-property" aria-hidden="true" class="header-anchor">#</a> Primitive Type Property</h3><p>Extracts the title of a post. Only the first matching result is extracted.</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; h1&quot;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><p>In short notation :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; h1&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre><p>The result :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;Title of the first matching result&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="array-property"><a href="#array-property" aria-hidden="true" class="header-anchor">#</a> Array Property</h3><p>Create an object with three properties : <em>title</em> and <em>paragraphs</em> and <em>addresses</em>.</p><ul><li><em>title</em> : text of the <strong>first</strong> selected element</li><li><em>paragraphs</em> : array of text of <strong>all</strong> selected elements</li><li><em>adresses</em> : array of <em>href</em> attribute values for all selected elements</li></ul><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; h1&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;text&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paragraphs&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; p&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;text&quot;</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;addresses&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; a&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;@href&quot;</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><p>The Result :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;this is the main title&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paragraphs&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;this is the first paragraphs&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;this is the second paragraph&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;addresses&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">&quot;http://hostname/path/to/ressource&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;relative/path&quot;</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><p>Using the short notation it is possible to extract <em>title</em> and <em>paragraphs</em> :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span>      <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.post &gt; h1&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paragraphs&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;body &gt; div.post &gt; p&quot;</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><p>This is possible because the default type <em>text</em> is appropriate for these 2 properties. The <em>addresses</em> property can't be extract using the short notation.</p><h3 id="single-object"><a href="#single-object" aria-hidden="true" class="header-anchor">#</a> Single Object</h3><p>Let's extract the first post and retrieve its title and list of paragraphs. Note that the <code>selector</code> of <em>title</em> and <em>text</em> properties is <strong>relative to the parent selector</strong> (here : <code>body &gt; div.list &gt; div.post</code>).</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;post&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.list &gt; div.post&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span>    <span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;h1&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;text&quot;</span>  <span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;div.body &gt; p&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;type&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;text&quot;</span><span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><p>The result :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;post&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;this is the title&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;text&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;This is the first paragraph of the text&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;And here is the second paragraph&quot;</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="array-of-object"><a href="#array-of-object" aria-hidden="true" class="header-anchor">#</a> Array Of Object</h3><p>Now extracts all posts (title and text) : it's <em>almost</em> the same as above but this time, we enclose the object definition into an array :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;post&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;body &gt; div.list &gt; div.post&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;type&quot;</span>    <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+      <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;h1&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;text&quot;</span>  <span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;selector&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;div.body &gt; p&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;type&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;text&quot;</span><span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><p>The result :</p><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;post&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;First post : this is the title&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;text&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;This is the first paragraph of the text&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;And here is the second paragraph&quot;</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">&quot;title&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;Second Post : this is the title&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;text&quot;</span> <span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;This is the first paragraph of the text&quot;</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;And here is the second paragraph&quot;</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div><!----><div class="content page-nav"><p class="inner"><span class="prev">
+        ← <a href="/bob-the-miner/itinerary.html" class="prev">
+          Itinerary
+        </a></span><!----></p></div></div></div></div>
+    <script src="/bob-the-miner/assets/js/2.0cd49815.js" defer></script><script src="/bob-the-miner/assets/js/app.d55ff3db.js" defer></script>
+  </body>
+</html>
