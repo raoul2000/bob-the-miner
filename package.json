@@ -9,7 +9,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "nodejs-news": "node examples/nodejs-news.js",
-    "nyt-headline": "node examples/new-york-time-headline.js",
+    "nyt-headline": "node examples/nyt-headline.js",
     "npm-crawler": "node examples/npm-crawler.js > ./examples/nrm-crawler.json",
     "my-blog": "node examples/my-blog.js > ./examples/my-blog.json",
     "my-blog-reloaded": "node examples/my-blog-reloaded.js > ./examples/my-blog-reloaded.json"
