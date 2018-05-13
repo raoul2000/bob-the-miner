@@ -1,8 +1,12 @@
 {
-  "name": "miner",
+  "name": "bob-the-miner",
   "version": "0.0.1",
   "description": "Bob is a web miner",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raoul2000/bob-the-miner.git"
+  },
   "scripts": {
     "server": "http-server ./test/www",
     "test": "mocha test/",
@@ -15,10 +19,14 @@
     "my-blog-reloaded": "node examples/my-blog-reloaded.js > ./examples/my-blog-reloaded.json"
   },
   "keywords": [
-    "scraper"
+    "scraper","web-scraper","web-miner","request"
   ],
-  "author": "",
+  "author": "raoul2000",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raoul2000/bob-the-miner/issues"
+  },
+  "homepage": "https://github.com/raoul2000/bob-the-miner",
   "devDependencies": {
     "chai": "^4.1.2",
     "http-server": "^0.11.1"
