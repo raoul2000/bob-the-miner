@@ -18,6 +18,17 @@ describe('objects properties as simple value',function(done){
 		done();
 	});
 
+	it('extracts property with type text (simple notation)',function(done){
+		let result = miner.mine(
+			{
+				text : "b"
+			},
+			"<p> text <b>text 1</b> <b>text 2</b> text</p>"
+		);
+		assert.deepEqual(result, { text : 'text 1'});
+		done();
+	});
+
 
 	it('extracts first matching selector',function(done){
 		let result = miner.mine(
@@ -25,6 +36,21 @@ describe('objects properties as simple value',function(done){
 				text : {
 					selector : "p"
 				}
+			},
+			`<div>
+				<p>1. text <b>bold</b> text</p>
+				<p>2. text <b>bold</b> text</p>
+			</div>
+			`
+		);
+		assert.deepEqual(result, { text : '1. text bold text'});
+		done();
+	});
+
+	it('extracts first matching selector (simple notation)',function(done){
+		let result = miner.mine(
+			{
+				text : "p"
 			},
 			`<div>
 				<p>1. text <b>bold</b> text</p>
