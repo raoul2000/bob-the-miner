@@ -32,7 +32,31 @@ bob.work(URL,
         }  
     })
   .then(result => {
-    console.log(JSON.stringify(result.data));
+    //console.log(JSON.stringify(result.data));
+    const regex = /.*Programme(.*)\n/gm;
+    const regex2 = /.* (.*)\n/gm;
+    let res2 = result.data.item.map( prog => {
+        let channel = prog.channel;
+        let match = prog.channel.match(regex);
+        if( match ) {
+            channel = match[1];
+        } 
+        return {
+            "channel" : channel,
+            "programme" : prog.programme.map( p => {
+                let name = p.name;
+                let m2 = name.match(regex2);
+                if( m2 ) {
+                    name = m2[1];
+                }
+                return {
+                    "name" : name,
+                    "hour" : p.hour
+                };
+            })
+        }
+    });
+    console.log(JSON.stringify(res2));
   })
   .catch(err => {
     console.err(err);
