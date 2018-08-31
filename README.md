@@ -5,10 +5,10 @@ What about [reading the doc ?](https://raoul2000.github.io/bob-the-miner/)
 
 # Install
 
-To use Bob in your one project :
+To use Bob in your own project :
 
 ```
-npm install bob-the-miner
+npm install bob-the-miner --save
 ```
 
 If you want to contribute :
@@ -38,7 +38,7 @@ Now you are ready to run tests. First start the test local server :
 npm run server
 ```
 
-Then run the tests :
+Then open another shell run the tests :
 ```
 npm test
 ```
