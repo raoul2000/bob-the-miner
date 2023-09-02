@@ -1,6 +1,6 @@
 {
   "name": "bob-the-miner",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "Bob is a web miner",
   "main": "index.js",
   "repository": {
@@ -19,7 +19,10 @@
     "my-blog-reloaded": "node examples/my-blog-reloaded.js > ./examples/my-blog-reloaded.json"
   },
   "keywords": [
-    "scraper","web-scraper","web-miner","request"
+    "scraper",
+    "web-scraper",
+    "web-miner",
+    "request"
   ],
   "author": "raoul2000",
   "license": "ISC",
@@ -28,16 +31,16 @@
   },
   "homepage": "https://github.com/raoul2000/bob-the-miner",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "http-server": "^0.11.1"
+    "chai": "^4.3.8",
+    "http-server": "^14.1.1",
+    "mocha": "^10.2.0",
+    "vuepress": "^1.9.10"
   },
   "dependencies": {
-    "async": "^2.6.0",
-    "cheerio": "^1.0.0-rc.2",
-    "jquery": "^3.3.1",
-    "jsdom": "^11.8.0",
-    "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
-    "url-parse": "^1.2.0"
+    "async": "^3.2.4",
+    "image-downloader": "^4.3.0",
+    "p-limit": "^3.0.0",
+    "puppeteer": "^21.1.1",
+    "uuid": "^9.0.0"
   }
 }

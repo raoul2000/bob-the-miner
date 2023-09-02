@@ -2,7 +2,7 @@
 
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const crawler = require('../src/crawler');
+const crawler = require('../src/main');
 
 
 describe('crawler multi pages loop', function(done) {

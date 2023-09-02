@@ -59,5 +59,5 @@ bob.work(URL,
     console.log(JSON.stringify(res2));
   })
   .catch(err => {
-    console.err(err);
+    console.error(err);
   });

@@ -1,7 +1,7 @@
 "use strict";
 
-const crawler = require('./src/crawler');
+const main = require('./src/main');
 
 module.exports = {
-  "work" : crawler.start
+  "work" : main.start
 };

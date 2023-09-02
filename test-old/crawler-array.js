@@ -2,7 +2,7 @@
 
 const assert  = require('chai').assert;
 const expect  = require('chai').expect;
-const crawler = require('../src/crawler');
+const crawler = require('../src/main');
 
 const URL_PAGE1 = 'http://127.0.0.1:8080/page-1.html';
 const URL_PAGE2 = 'http://127.0.0.1:8080/page-2.html';
