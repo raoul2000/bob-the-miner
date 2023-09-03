@@ -16,10 +16,7 @@ const openPage = (url, browser) =>
         .then((page) =>
             page.goto(url, { waitUntil: "networkidle2" }).then((response) => {
                 if (response.status() !== 200) {
-                    throw new Error(
-                        `page load request returned status ${response.status()}`,
-                        { cause: url }
-                    );
+                    throw new Error(`page load request returned status ${response.status()}`, { cause: url });
                 }
                 return page;
             })
@@ -37,11 +34,7 @@ const openPage = (url, browser) =>
  */
 const minePage = async (page, plan) => {
     const extractedData = await page.evaluate((plan) => {
-        const _extractFromPage = (
-            selector,
-            type = "text",
-            rootElement = document
-        ) => {
+        const _extractFromPage = (selector, type = "text", rootElement = document) => {
             if (!selector) {
                 throw new Error("trying to extract data with a NULL selector");
             }
@@ -63,35 +56,24 @@ const minePage = async (page, plan) => {
 
             let valueTypeReader = (el) => el.textContent;
             if (type) {
-                if (
-                    typeof type === "string" &&
-                    type?.startsWith("@") &&
-                    type.length > 1
-                ) {
+                if (typeof type === "string" && type?.startsWith("@") && type.length > 1) {
                     // type = "@attributeName"
                     const normalized = type.substring(1).trim();
-                    const [attrName, modificator] = normalized
-                        .split(" ")
-                        .filter((s) => s.length !== 0);
+                    const [attrName, modificator] = normalized.split(" ").filter((s) => s.length !== 0);
                     if (modificator === "absolute") {
-                        valueTypeReader = (el) =>
-                            resolveUrl(el.getAttribute(attrName));
+                        valueTypeReader = (el) => resolveUrl(el.getAttribute(attrName));
                     } else {
                         valueTypeReader = (el) => el.getAttribute(attrName);
                     }
                 } else if (typeof type === "object") {
                     // {type: {...}}
                     if (Array.isArray(selector)) {
-                        return [
-                            ...rootElement.querySelectorAll(selector[0]),
-                        ].map((el) => _extractFromPage(type, null, el));
-                    } else {
-                        const newRootElement =
-                            rootElement.querySelector(selector);
-                        return (
-                            newRootElement &&
-                            _extractFromPage(type, null, newRootElement)
+                        return [...rootElement.querySelectorAll(selector[0])].map((el) =>
+                            _extractFromPage(type, null, el)
                         );
+                    } else {
+                        const newRootElement = rootElement.querySelector(selector);
+                        return newRootElement && _extractFromPage(type, null, newRootElement);
                     }
                 }
             }
@@ -100,26 +82,16 @@ const minePage = async (page, plan) => {
                 const el = rootElement.querySelector(selector);
                 result = el && valueTypeReader(el);
             } else if (Array.isArray(selector) && selector.length !== 0) {
-                result = [...rootElement.querySelectorAll(selector[0])].map(
-                    valueTypeReader
-                );
+                result = [...rootElement.querySelectorAll(selector[0])].map(valueTypeReader);
             } else if (selector && typeof selector === "object") {
                 const selectorObj = selector;
                 if (selectorObj.hasOwnProperty("selector")) {
-                    result = _extractFromPage(
-                        selectorObj.selector,
-                        selectorObj.type,
-                        rootElement
-                    );
+                    result = _extractFromPage(selectorObj.selector, selectorObj.type, rootElement);
                 } else {
                     result = Object.entries(selectorObj)
                         .map(([propName, aSelector]) => ({
                             name: propName,
-                            data: _extractFromPage(
-                                aSelector,
-                                type,
-                                rootElement
-                            ),
+                            data: _extractFromPage(aSelector, type, rootElement),
                         }))
                         .reduce((acc, { name, data }) => {
                             acc[name] = data;
@@ -143,13 +115,10 @@ const minePage = async (page, plan) => {
 
 const mineUrl = (url, plan, browser) => {
     console.log(`mining : ${url}`);
-    return openPage(url, browser).then((page) =>
-        minePage(page, plan).finally(() => page.close())
-    );
+    return openPage(url, browser).then((page) => minePage(page, plan).finally(() => page.close()));
 };
 
-const defaultMinedDataHandler = (url, minedData) =>
-    console.log(JSON.stringify({ url, minedData }, null, 4));
+const defaultMinedDataHandler = (url, minedData) => console.log(JSON.stringify({ url, minedData }, null, 4));
 
 /**
  * Extract data from one or more pages.
@@ -167,12 +136,10 @@ const run = (url, plan, options) =>
                 return Promise.resolve({ urlToMine: url, browser });
             } else if (typeof url === "object") {
                 // TODO: validate URL plan
-                return mineUrl(url.url, url.plan, browser).then(
-                    (extractedUrl) => ({
-                        urlToMine: extractedUrl,
-                        browser,
-                    })
-                );
+                return mineUrl(url.url, url.plan, browser).then((extractedUrl) => ({
+                    urlToMine: extractedUrl,
+                    browser,
+                }));
             }
         })
         .then(({ urlToMine, browser }) => {
@@ -182,28 +149,26 @@ const run = (url, plan, options) =>
                 minigJob = Promise.all(
                     urlToMine.map((thisUrl) =>
                         limit(() =>
-                            mineUrl(thisUrl, plan, browser).then((minedData) =>
-                                (
-                                    options?.onMinedData ??
-                                    defaultMinedDataHandler
-                                )(thisUrl, minedData)
-                            )
+                            mineUrl(thisUrl, plan, browser).then((minedData) => {
+                                (options?.onMinedData ?? defaultMinedDataHandler)(thisUrl, minedData);
+                                return minedData;
+                            })
                         )
                     )
                 );
             } else {
-                minigJob = mineUrl(urlToMine, plan, browser).then((minedData) =>
-                    (options?.onMinedData ?? defaultMinedDataHandler)(
-                        urlToMine,
-                        minedData
-                    )
-                );
+                minigJob = mineUrl(urlToMine, plan, browser).then((minedData) => {
+                    (options?.onMinedData ?? defaultMinedDataHandler)(urlToMine, minedData);
+                    return minedData;
+                });
             }
-            return minigJob.finally(() =>
-                browser.close().then(() => console.log("browser closed"))
-            );
+            return minigJob.finally(() => browser.close().then(() => console.log("browser closed")));
         })
         .catch((error) => console.log(JSON.stringify(error, null, 4)));
 
 exports.start = run;
-
+/*
+run("http://127.0.0.1:8080/blog/index.html", ["h2"]).then((result) =>
+    console.log("result = " + JSON.stringify(result, null, 4))
+);
+*/
