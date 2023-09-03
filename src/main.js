@@ -130,7 +130,7 @@ const defaultMinedDataHandler = (url, minedData) => console.log(JSON.stringify({
  */
 const run = (url, plan, options) =>
     puppeteer
-        .launch({ headless: false, devtools: false })
+        .launch({ headless: "new", devtools: false })
         .then((browser) => {
             if (Array.isArray(url) || typeof url === "string") {
                 return Promise.resolve({ urlToMine: url, browser });
@@ -167,8 +167,10 @@ const run = (url, plan, options) =>
         .catch((error) => console.log(JSON.stringify(error, null, 4)));
 
 exports.start = run;
+
 /*
-run("http://127.0.0.1:8080/blog/index.html", ["h2"]).then((result) =>
+run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
     console.log("result = " + JSON.stringify(result, null, 4))
-);
+).catch(error => console.error('ERROR'));
 */
+
