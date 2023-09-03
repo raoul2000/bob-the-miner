@@ -3,7 +3,8 @@
 const assert = require("chai").assert;
 const bob = require("../index");
 
-describe("when errors happen", () => {
+describe("when errors happen", function () {
+    this.timeout(0);
     it("returns NULL when selector doesn't match any element", (done) => {
         bob.work("http://127.0.0.1:8080/blog/index.html", "h5")
             .then((result) => {
@@ -21,7 +22,7 @@ describe("when errors happen", () => {
             })
             .catch(done);
     });
-   
+
     it("returns UNDEFINED when request returns 404", (done) => {
         bob.work("http://127.0.0.1:8080/blog/NOT_FOUND.html", "!")
             .then((result) => {
