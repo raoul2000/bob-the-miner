@@ -120,8 +120,25 @@ const mineUrl = (url, plan, browser) => {
 
 const defaultMinedDataHandler = (url, minedData) => console.log(JSON.stringify({ url, minedData }, null, 4));
 
+const packageMinedData = (options, minedUrl, minedData) => {
+    if (options?.indexByUrl) {
+        const pkg = {};
+        pkg[minedUrl] = minedData;
+        return pkg;
+    } else {
+        return minedData;
+    }
+};
 /**
  * Extract data from one or more pages.
+ *
+ * Available options:
+ * - **indexByUrl**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with one key being the mined URL , and the 
+ * mined data as value.
+ * - **maxPage**: (number, default = 10) - max number of concurrent mining jobs. Use this option to limit resources
+ * consumption when a lot of url have to be mined.
+ * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
+ * done. The first argument is the mined URL, the second argument is the mined data.
  *
  * @param {string|string[]|object} url describes the URL of the page to mine
  * @param {string | string[] | object} plan  the data extraction plan applied to the page
@@ -150,16 +167,18 @@ const run = (url, plan, options) =>
                     urlToMine.map((thisUrl) =>
                         limit(() =>
                             mineUrl(thisUrl, plan, browser).then((minedData) => {
-                                (options?.onMinedData ?? defaultMinedDataHandler)(thisUrl, minedData);
-                                return minedData;
+                                const pkgData = packageMinedData(options, thisUrl, minedData);
+                                (options?.onMinedData ?? defaultMinedDataHandler)(thisUrl, pkgData);
+                                return pkgData;
                             })
                         )
                     )
                 );
             } else {
                 minigJob = mineUrl(urlToMine, plan, browser).then((minedData) => {
-                    (options?.onMinedData ?? defaultMinedDataHandler)(urlToMine, minedData);
-                    return minedData;
+                    const pkgData = packageMinedData(options, urlToMine, minedData);
+                    (options?.onMinedData ?? defaultMinedDataHandler)(urlToMine, pkgData);
+                    return pkgData;
                 });
             }
             return minigJob.finally(() => browser.close().then(() => console.log("browser closed")));
@@ -168,9 +187,14 @@ const run = (url, plan, options) =>
 
 exports.start = run;
 
+run("http://127.0.0.1:8080/blog/post/2.html", "h2", {
+    indexByUrl: false,
+})
+    .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
+    .catch((error) => console.error("ERROR"));
+
 /*
 run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
     console.log("result = " + JSON.stringify(result, null, 4))
 ).catch(error => console.error('ERROR'));
 */
-
