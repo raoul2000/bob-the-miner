@@ -139,6 +139,8 @@ const packageMinedData = (options, minedUrl, minedData) => {
  * consumption when a lot of url have to be mined.
  * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
  * done. The first argument is the mined URL, the second argument is the mined data.
+ * - **puppeteer** (object, default = {headless: "new"} ) - Puppteer launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
+ * Use this property if you need to customize underlying Puppeteer processes.
  *
  * @param {string|string[]|object} url describes the URL of the page to mine
  * @param {string | string[] | object} plan  the data extraction plan applied to the page
@@ -147,7 +149,7 @@ const packageMinedData = (options, minedUrl, minedData) => {
  */
 const run = (url, plan, options) =>
     puppeteer
-        .launch({ headless: "new", devtools: false })
+        .launch({ headless: "new", ...options?.puppeteer })
         .then((browser) => {
             if (Array.isArray(url) || typeof url === "string") {
                 return Promise.resolve({ urlToMine: url, browser });
@@ -189,6 +191,7 @@ exports.start = run;
 
 run("http://127.0.0.1:8080/blog/post/2.html", "h2", {
     indexByUrl: false,
+    puppeteer: {headless : "new"}
 })
     .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
     .catch((error) => console.error("ERROR"));
