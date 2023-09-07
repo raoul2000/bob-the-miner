@@ -121,20 +121,27 @@ const mineUrl = (url, plan, browser) => {
 const defaultMinedDataHandler = (url, minedData) => console.log(JSON.stringify({ url, minedData }, null, 4));
 
 const packageMinedData = (options, minedUrl, minedData) => {
+    // append page url ?
+    let dataForm = options?.appendUrlAsProperty ? { _pageUrl: minedUrl, _minedData: minedData } : minedData;
+
+    // index by page Url ?
     if (options?.indexByUrl) {
         const pkg = {};
-        pkg[minedUrl] = minedData;
+        pkg[minedUrl] = dataForm;
         return pkg;
     } else {
-        return minedData;
+        return dataForm;
     }
 };
 /**
  * Extract data from one or more pages.
  *
  * Available options:
- * - **indexByUrl**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with one key being the mined URL , and the 
+ * - **indexByUrl**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with one key being the mined URL , and the
  * mined data as value.
+ * - **appendUrlAsProperty**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with 2 properties:
+ *   - `_pageUrl` : the URL of the page that was mined
+ *   - `_minedData` : the data mined from the page
  * - **maxPage**: (number, default = 10) - max number of concurrent mining jobs. Use this option to limit resources
  * consumption when a lot of url have to be mined.
  * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
@@ -185,14 +192,21 @@ const run = (url, plan, options) =>
             }
             return minigJob.finally(() => browser.close().then(() => console.log("browser closed")));
         })
-        .catch((error) => console.log(JSON.stringify(error, null, 4)));
+        .catch((error) => {
+            console.log(`ERROR : ${error.message}`);
+        });
 
 exports.start = run;
 
-run("http://127.0.0.1:8080/blog/post/2.html", "h2", {
-    indexByUrl: false,
-    puppeteer: {headless : "new"}
-})
+run(
+    "http://127.0.0.1:8080/blog/post/2.html",
+    { myData: "h2" },
+    {
+        indexByUrl: false,
+        appendUrlAsProperty: false,
+        puppeteer: { headless: "new" },
+    }
+)
     .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
     .catch((error) => console.error("ERROR"));
 
