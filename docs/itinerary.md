@@ -4,7 +4,7 @@
 
 > The *Itinerary* is when you tell bob where to go to start data extraction
 
-## a Single Page
+## One Page
 
 In its simplest form, the *itinerary* is the address of the page you want to mine.
 
@@ -32,9 +32,10 @@ In this case the result is an array where each item is the result of data extrac
 [ result, result, ... ]
 ```
 
-Due to the fact that mining job are executed in parallel, **there is no garantee that the results ordrer matches** the adresses order. If you need to maintain the adress/result relation, you can use the `indexByUrl` or `appendUrlAsProperty` options. See the [Options](./options.md) section.
+Due to the fact that mining job are executed in parallel, **there is no garantee that the results ordrer matches** the adresses order. If you need to maintain the adress/result relation, you can use the `indexByUrl` or `appendUrlAsProperty` options. See the [Options](./options.md) section for more.
 
 ## URL extraction
+
 
 TBD
 
