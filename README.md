@@ -63,17 +63,17 @@ npm run npm-crawler
 
 # Documentation
 
-Documentation is based on [vuepress](https://vuepress.vuejs.org) that is assumed to be globally installed. If that's not the case, install it :
+Documentation is based on [vuepress](https://vuepress.vuejs.org).
 
-```
-$ npm install --global vuepress
-```
-
-To view the documentation :
+To view the documentation running a local server :
 
 ```
 npm run docs:dev
 ```
+
+> If the error `error:0308010C:digital envelope routines::unsupported` is reported during local dev server startup, try to first 
+> define `export NODE_OPTIONS=--openssl-legacy-provider` and re-run the command. (see [this thread](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported) for more)
+
 
 To build the documentation :
 ```
