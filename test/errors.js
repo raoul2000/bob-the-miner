@@ -23,21 +23,19 @@ describe("when errors happen", function () {
             .catch(done);
     });
 
-    it("returns UNDEFINED when request returns 404", (done) => {
+    it("promise rejected when request returns 404", (done) => {
         bob.work("http://127.0.0.1:8080/blog/NOT_FOUND.html", "!")
             .then((result) => {
-                assert.isUndefined(result);
-                done();
+                done("should be rejected");
             })
-            .catch(done);
+            .catch(() => done());
     });
 
-    it("returns UNDEFINED when URL is invalid", (done) => {
+    it("promise rejected when URL is invalid", (done) => {
         bob.work("/blog/NOT_FOUND.html", "!")
             .then((result) => {
-                assert.isUndefined(result);
-                done();
+                done("should be rejected");
             })
-            .catch(done);
+            .catch(() => done());
     });
 });

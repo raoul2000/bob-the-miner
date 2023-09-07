@@ -102,23 +102,30 @@ const minePage = async (page, plan) => {
             return result;
         };
         try {
-            console.log("starting data mining from page");
+            console.log(`starting data mining from page (${window.location.href})`);
             const finalResult = _extractFromPage(plan);
-            console.log("done with data mining from page");
+            console.log(`done with data mining from page (${window.location.href})`);
             return finalResult;
         } catch (error) {
-            console.log("ERROR : data mining failed" + error);
+            console.error(`data mining failed (${window.location.href}) : ${error}`);
         }
     }, plan);
     return extractedData;
 };
 
-const mineUrl = (url, plan, browser) => {
-    console.log(`mining : ${url}`);
-    return openPage(url, browser).then((page) => minePage(page, plan).finally(() => page.close()));
+const mineUrl = (url, plan, browser, options) => {
+    options?.verbose && console.log(`mining : ${url}`);
+    return openPage(url, browser).then((page) => {
+        page.on("console", (message) => {
+            if (message.type() === "error") {
+                throw new Error(message.text(), { cause: url });
+            } else if (options?.verbose) {
+                console.log(`browser (${message.type()}) : ${message.text()}`);
+            }
+        });
+        return minePage(page, plan).finally(() => page.close());
+    });
 };
-
-const defaultMinedDataHandler = (url, minedData) => console.log(JSON.stringify({ url, minedData }, null, 4));
 
 const packageMinedData = (options, minedUrl, minedData) => {
     // append page url ?
@@ -133,6 +140,20 @@ const packageMinedData = (options, minedUrl, minedData) => {
         return dataForm;
     }
 };
+
+const postMiningJob = (minedUrl, minedData, options) => {
+    const pkgData = packageMinedData(options, minedUrl, minedData);
+    if (options?.onMinedData) {
+        options.onMinedData(minedUrl, pkgData);
+    }
+    if (options?.verbose) {
+        console.log(`url  : ${minedUrl}`);
+        console.log(`data : \n${JSON.stringify(minedData, null, 4)}`);
+        console.log("--------------------------------------------------");
+    }
+    return pkgData;
+};
+
 /**
  * Extract data from one or more pages.
  *
@@ -146,6 +167,7 @@ const packageMinedData = (options, minedUrl, minedData) => {
  * consumption when a lot of url have to be mined.
  * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
  * done. The first argument is the mined URL, the second argument is the mined data.
+ * - **verbose** (boolean, default = FALSE) - when TRUE, log messages are written to stdout
  * - **puppeteer** (object, default = {headless: "new"} ) - Puppteer launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
  * Use this property if you need to customize underlying Puppeteer processes.
  *
@@ -162,7 +184,7 @@ const run = (url, plan, options) =>
                 return Promise.resolve({ urlToMine: url, browser });
             } else if (typeof url === "object") {
                 // TODO: validate URL plan
-                return mineUrl(url.url, url.plan, browser).then((extractedUrl) => ({
+                return mineUrl(url.url, url.plan, browser, options).then((extractedUrl) => ({
                     urlToMine: extractedUrl,
                     browser,
                 }));
@@ -175,40 +197,41 @@ const run = (url, plan, options) =>
                 minigJob = Promise.all(
                     urlToMine.map((thisUrl) =>
                         limit(() =>
-                            mineUrl(thisUrl, plan, browser).then((minedData) => {
-                                const pkgData = packageMinedData(options, thisUrl, minedData);
-                                (options?.onMinedData ?? defaultMinedDataHandler)(thisUrl, pkgData);
-                                return pkgData;
+                            mineUrl(thisUrl, plan, browser, options).then((minedData) => {
+                                return postMiningJob(thisUrl, minedData, options);
                             })
                         )
                     )
                 );
             } else {
-                minigJob = mineUrl(urlToMine, plan, browser).then((minedData) => {
-                    const pkgData = packageMinedData(options, urlToMine, minedData);
-                    (options?.onMinedData ?? defaultMinedDataHandler)(urlToMine, pkgData);
-                    return pkgData;
+                minigJob = mineUrl(urlToMine, plan, browser, options).then((minedData) => {
+                    return postMiningJob(urlToMine, minedData, options);
                 });
             }
-            return minigJob.finally(() => browser.close().then(() => console.log("browser closed")));
+            return minigJob.finally(() =>
+                browser.close().then(() => options?.verbose && console.log("browser closed"))
+            );
         })
         .catch((error) => {
-            console.log(`ERROR : ${error.message}`);
+            options?.verbose && console.error(`ERROR : ${error.message}`);
+            throw error;
         });
 
 exports.start = run;
 
-run(
-    "http://127.0.0.1:8080/blog/post/2.html",
+/* run(
+    ["http://127.0.0.1:8080/blog/post/2.html", "http://127.0.0.1:8080/blog/post/1.html"],
     { myData: "h2" },
     {
         indexByUrl: false,
         appendUrlAsProperty: false,
+        verbose: true,
+
         puppeteer: { headless: "new" },
     }
 )
     .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
-    .catch((error) => console.error("ERROR"));
+    .catch((error) => console.error(error)); */
 
 /*
 run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
