@@ -16,7 +16,7 @@ bob.work('https://www.nytimes.com/', "h1.story-heading > a")
 This was an easy one for Bob who is actually able to work much harder to try to satisfy your demand, but basically you get the idea :
 
 - the first argument is the place to digg (here a simple URL)
-- the second is the extraction plan (here a simple jquery-like selector)
+- the second is the extraction plan (here a simple CSS selector)
 
 At last, you may have noticed that when you ask Bob to work, he gives you back the [Promise](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise) that he will do his best, and nothing more (because you never know). If no problem occurs, the promise will be *resolved* with the data extracted by Bob, otherwise the promise will be *rejeced* with an error describing the problem.
 
@@ -24,19 +24,21 @@ Now you know Bob.
 
 Next you'll find a complete description of how to ask Bob to mine according to your needs, because Bob can actually do much more than just mine a simple value from a single web page.
 
+## Limitations
+
+Bob is respecting private life and will not go digg into page which require authentication or any kind of verification: the web page must be publically available, offering its data to the world for Bob to start working on it.
+
 ## See Bob in action
 
-If you want to see some examples of what Bob can do, check out the [Example Folder](https://github.com/raoul2000/bob-the-miner/tree/master/examples). There, you'll find commented code that actually work (at least today, the 13th May 2018).
+If you want to see some examples of what Bob can do, check out the [Example Folder](https://github.com/raoul2000/bob-the-miner/tree/master/examples). There, you'll find commented code that actually works (at least today, ).
 
 - *nyt-headline* : simply get the headline from the [NYT homepage](https://www.nytimes.com/)
-- *nodejs-news* : list of post titles from the [Node Foundation News Page](https://foundation.nodejs.org/news)
-- *npm-crawler* : result set for a search of "crawler" packages from the [NPM](https://www.npmjs.com/search?q=crawler&ranking=popularity&page=0&perPage=20) website.
+- *npm-crawler* : result set for a search of "crawler" packages on the [NPM](https://www.npmjs.com/search?q=crawler&ranking=popularity&page=0&perPage=20) website.
 
 To run for example *nyt-headline*, just enter :
 ```
 npm run nyt-headline
 ```
-
 
 ## How to ask Bob to mine
 
@@ -44,3 +46,4 @@ To be able to mine, Bob needs 2 things :
 
 - an **itinerary** : because the World Wide Web is a vast land, and because you don't want Bob to be lost, you must provide him with an itinerary that will be used to digg one or more pages hidden in the web.
 - an **extractionPlan** : once Bob reaches the digging area (i.e. the target web page), he has to start working. To be able to extract the valuable data you are interested in, you will pass an *extraction plan* to Bob.
+- Bob is also willing to modify a little bit how he works if you're not satisfied with his traditional digging technique (but you'll have to ask politely). For this, you can use a third optional argument that will be described in another section.

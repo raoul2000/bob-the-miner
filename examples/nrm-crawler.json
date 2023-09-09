@@ -1,0 +1,104 @@
+{
+    "libraries": [
+        {
+            "name": "crawler",
+            "url": "https://www.npmjs.com/package/crawler",
+            "description": "Crawler is a web spider written with Nodejs. It gives you the full power of jQuery on the server to parse a big number of pages as they are downloaded, asynchronously"
+        },
+        {
+            "name": "Crawler",
+            "url": "https://www.npmjs.com/package/Crawler",
+            "description": "Search for anything on web."
+        },
+        {
+            "name": "@nodelib/fs.walk",
+            "url": "https://www.npmjs.com/package/@nodelib/fs.walk",
+            "description": "A library for efficiently walking a directory recursively"
+        },
+        {
+            "name": "simplecrawler",
+            "url": "https://www.npmjs.com/package/simplecrawler",
+            "description": "Very straightforward, event driven web crawler. Features a flexible queue interface and a basic cache mechanism with extensible backend."
+        },
+        {
+            "name": "pdf-parse",
+            "url": "https://www.npmjs.com/package/pdf-parse",
+            "description": "Pure javascript cross-platform module to extract text from PDFs."
+        },
+        {
+            "name": "isbot",
+            "url": "https://www.npmjs.com/package/isbot",
+            "description": "🤖 detect bots/crawlers/spiders via the user agent."
+        },
+        {
+            "name": "puppeteer-extra-plugin-stealth",
+            "url": "https://www.npmjs.com/package/puppeteer-extra-plugin-stealth",
+            "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder."
+        },
+        {
+            "name": "osmosis",
+            "url": "https://www.npmjs.com/package/osmosis",
+            "description": "Web scraper for NodeJS"
+        },
+        {
+            "name": "node-scrapy",
+            "url": "https://www.npmjs.com/package/node-scrapy",
+            "description": "Simple, lightweight and expressive web scraping with Node.js"
+        },
+        {
+            "name": "npm-license-crawler",
+            "url": "https://www.npmjs.com/package/npm-license-crawler",
+            "description": "Analyzes license information for multiple node.js modules (package.json files) as part of your software project."
+        },
+        {
+            "name": "js-crawler",
+            "url": "https://www.npmjs.com/package/js-crawler",
+            "description": "Web crawler for Node.js"
+        },
+        {
+            "name": "sitemapper",
+            "url": "https://www.npmjs.com/package/sitemapper",
+            "description": "Parser for XML Sitemaps to be used with Robots.txt and web crawlers"
+        },
+        {
+            "name": "fdir",
+            "url": "https://www.npmjs.com/package/fdir",
+            "description": "The fastest directory crawler & globbing alternative to glob, fast-glob, & tiny-glob. Crawls 1m files in < 1s"
+        },
+        {
+            "name": "web-auto-extractor",
+            "url": "https://www.npmjs.com/package/web-auto-extractor",
+            "description": "Automatically extracts structured information from webpages"
+        },
+        {
+            "name": "cheerio-httpcli",
+            "url": "https://www.npmjs.com/package/cheerio-httpcli",
+            "description": "http client module with cheerio & iconv(-lite) & promise"
+        },
+        {
+            "name": "apify",
+            "url": "https://www.npmjs.com/package/apify",
+            "description": "The scalable web crawling and scraping library for JavaScript/Node.js. Enables development of data extraction and web automation jobs (not only) with headless Chrome and Puppeteer."
+        },
+        {
+            "name": "sitemap-generator",
+            "url": "https://www.npmjs.com/package/sitemap-generator",
+            "description": "Easily create XML sitemaps for your website."
+        },
+        {
+            "name": "x-ray-crawler",
+            "url": "https://www.npmjs.com/package/x-ray-crawler",
+            "description": "x-ray's crawler"
+        },
+        {
+            "name": "apify-client",
+            "url": "https://www.npmjs.com/package/apify-client",
+            "description": "Apify API client for JavaScript"
+        },
+        {
+            "name": "node-spider",
+            "url": "https://www.npmjs.com/package/node-spider",
+            "description": "Generic web crawler powered by Node.js"
+        }
+    ]
+}

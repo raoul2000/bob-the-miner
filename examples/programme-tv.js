@@ -32,7 +32,9 @@ bob.work(URL,
         }  
     })
   .then(result => {
-    //console.log(JSON.stringify(result.data));
+    console.log(JSON.stringify(result, null, 4));
+
+    /*
     const regex = /.*Programme(.*)\n/gm;
     const regex2 = /.* (.*)\n/gm;
     let res2 = result.data.item.map( prog => {
@@ -55,8 +57,8 @@ bob.work(URL,
                 };
             })
         }
-    });
-    console.log(JSON.stringify(res2));
+    });*/
+    
   })
   .catch(err => {
     console.error(err);

@@ -219,6 +219,12 @@ const run = (url, plan, options) =>
 
 exports.start = run;
 
+/*
+run('https://www.nytimes.com/', ["section.story-wrapper h3"])
+.then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
+.catch((error) => console.error(error));
+*/
+
 /* run(
     ["http://127.0.0.1:8080/blog/post/2.html", "http://127.0.0.1:8080/blog/post/1.html"],
     { myData: "h2" },

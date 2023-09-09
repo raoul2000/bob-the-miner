@@ -1,26 +1,20 @@
 "use strict";
 
-const bob = require('../index');
+const bob = require("../index");
 
-bob.work({
-    "url": 'https://www.npmjs.com/search?q=crawler&ranking=popularity&page=0&perPage=20',
-    "nextUrl": {
-      "selector": ".search__searchTopbar___2R2Ol .pagination__page___300Ea:last > a",
-      "type": "@href"
+bob.work("https://www.npmjs.com/search?q=crawler&ranking=popularity&page=0&perPage=20", {
+    libraries: {
+        selector: ["section"],
+        type: {
+            name: "div.flex.flex-row.items-end.pr3 h3",
+            url: { selector: "div.flex.flex-row.items-end.pr3 a", type: "@href absolute" },
+            description: "p",
+        },
     },
-    "maxJump": 1
-  }, {
-    "module": {
-      "selector": "section",
-      "type": [{
-        "name": 'h3',
-        "description": "p"
-      }]
-    }
-  })
-  .then(result => {
-    console.log(JSON.stringify(result));
-  })
-  .catch(err => {
-    console.error(err);
-  });
+})
+    .then((result) => {
+        console.log(JSON.stringify(result, null, 4));
+    })
+    .catch((err) => {
+        console.error(err);
+    });
