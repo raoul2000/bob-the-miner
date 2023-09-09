@@ -8,7 +8,7 @@
     "url": "https://github.com/raoul2000/bob-the-miner.git"
   },
   "scripts": {
-    "server": "http-server ./test/www",
+    "test-server": "http-server ./test/www",
     "test": "mocha test/",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
