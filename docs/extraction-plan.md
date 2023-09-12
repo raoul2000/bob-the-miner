@@ -5,7 +5,7 @@
 
 ## A Simple Selector
 
-As we already saw, the most simple extraction plan is a [JQuery Selector](https://api.jquery.com/category/selectors/) that is evaluated on the
+As we already saw, the most simple extraction plan is a [CSS selector](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) that is evaluated on the
 page. The extracted value is the text value of the first matching element.
 
 ```js
@@ -13,22 +13,19 @@ bob.work(
   "http://hostname/path/post-01.html",
   "div.content > div.post > h1"
 );
+// output example = "This is the Title"
 ```
 In this case, the result is a simple string.
 
-If you want to extract more than one simple value using a selector, just provide an array
-where each item is a selector. Again, only the first matching element for each selector
-will be returned.
+If you want to extract not only the first matching element, but all of them, just enclose the selector in an array. Th extracted value is an array of strings.
 
 ```js
 bob.work(
   "http://hostname/path/post-01.html",
-  ["div.content > div.post > h1", "div.content > div.post > p.body"]
+  ["div.content > div.post > h1"]
 );
+// output example = ["This is the Title", "Another title" ]
 ```
-
-You will receive an array of strings, where the first one is the title of the post, and the second
-one, the body of the post.
 
 But ok, this is quite basic right ? Bob can also provide a complete object if you tell him how to
 do. We will see that on the next chapter.
@@ -42,12 +39,26 @@ plan describing exactly this object. Here is an example... Are you able to under
 bob.work(
   "http://hostname/path/post-01.html",
   {
+    "title":     "div.content > div.post > h1",
+    "sub-title": "div.content > div.post > h3",
+    "text" :     ["div.content > div.post > p"]
+  }
+);
+```
+
+The object we ask Bob to build has 3 properties
+
+
+```js
+bob.work(
+  "http://hostname/path/post-01.html",
+  {
     "postList": {
       "selector": "div.content > div.post",
-      "type": [{
+      "type": {
         "title": '.post-header > h3.title'
         "body" :  'div.excerpt'
-      }]
+      }
     }
   }
 );

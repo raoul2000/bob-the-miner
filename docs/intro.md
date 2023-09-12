@@ -26,7 +26,7 @@ Next you'll find a complete description of how to ask Bob to mine according to y
 
 ## Limitations
 
-Bob is respecting private life and will not go digg into page which require authentication or any kind of verification: the web page must be publically available, offering its data to the world for Bob to start working on it.
+Bob is respecting private life and will not go digg into page which require authentication or any kind of verification: the web page must be publically available, offering its data to the world, for Bob to start working on it.
 
 ## See Bob in action
 
@@ -46,4 +46,6 @@ To be able to mine, Bob needs 2 things :
 
 - an **itinerary** : because the World Wide Web is a vast land, and because you don't want Bob to be lost, you must provide him with an itinerary that will be used to digg one or more pages hidden in the web.
 - an **extractionPlan** : once Bob reaches the digging area (i.e. the target web page), he has to start working. To be able to extract the valuable data you are interested in, you will pass an *extraction plan* to Bob.
-- Bob is also willing to modify a little bit how he works if you're not satisfied with his traditional digging technique (but you'll have to ask politely). For this, you can use a third optional argument that will be described in another section.
+
+
+Bob is also willing to modify a little bit how he works if you're not satisfied with his traditional digging technique (but you'll have to ask politely). For this, you can use a third optional argument that will be described in another section.
