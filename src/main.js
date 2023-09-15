@@ -14,7 +14,7 @@ const openPage = (url, browser) =>
     browser
         .newPage()
         .then((page) =>
-            page.goto(url, { waitUntil: "networkidle2" }).then((response) => {
+            page.goto(url, { waitUntil: "networkidle0" }).then((response) => {
                 if (response.status() !== 200) {
                     throw new Error(`page load request returned status ${response.status()}`, { cause: url });
                 }
@@ -101,14 +101,27 @@ const minePage = async (page, plan) => {
             }
             return result;
         };
-        try {
-            console.log(`starting data mining from page (${window.location.href})`);
-            const finalResult = _extractFromPage(plan);
-            console.log(`done with data mining from page (${window.location.href})`);
-            return finalResult;
-        } catch (error) {
-            console.error(`data mining failed (${window.location.href}) : ${error}`);
+
+        // start extraction function 
+        const timeoutBeforeExtractionMs = 500;
+        if(timeoutBeforeExtractionMs) {
+            console.log(`data extraction will start after ${timeoutBeforeExtractionMs}ms timeout`);
         }
+
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    console.log(`starting data mining from page (${window.location.href})`);
+                    const finalResult = _extractFromPage(plan);
+                    console.log(`done with data mining from page (${window.location.href})`);
+                    resolve(finalResult);
+                } catch (error) {
+                    console.error(`data mining failed (${window.location.href}) : ${error}`);
+                    reject(error);
+                }
+                        
+            }, timeoutBeforeExtractionMs);
+        })
     }, plan);
     return extractedData;
 };
