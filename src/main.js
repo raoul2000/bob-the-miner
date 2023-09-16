@@ -102,9 +102,11 @@ const minePage = async (page, plan) => {
             return result;
         };
 
-        // start extraction function 
-        const timeoutBeforeExtractionMs = 500;
-        if(timeoutBeforeExtractionMs) {
+        // start extraction function
+        // for now this feature has no obvious usage and deserve some more analysis
+        // i.e it is not exposed to user config
+        const timeoutBeforeExtractionMs = 0;
+        if (timeoutBeforeExtractionMs) {
             console.log(`data extraction will start after ${timeoutBeforeExtractionMs}ms timeout`);
         }
 
@@ -119,16 +121,19 @@ const minePage = async (page, plan) => {
                     console.error(`data mining failed (${window.location.href}) : ${error}`);
                     reject(error);
                 }
-                        
             }, timeoutBeforeExtractionMs);
-        })
+        });
     }, plan);
     return extractedData;
 };
 
 const mineUrl = (url, plan, browser, options) => {
     options?.verbose && console.log(`mining : ${url}`);
-    return openPage(url, browser).then((page) => {
+    return openPage(url, browser , {
+        waitUntil: 'load',
+        // Remove the timeout
+        timeout: 0
+    }).then((page) => {
         page.on("console", (message) => {
             if (message.type() === "error") {
                 throw new Error(message.text(), { cause: url });
@@ -231,6 +236,7 @@ const run = (url, plan, options) =>
         });
 
 exports.start = run;
+
 
 /*
 run('https://www.nytimes.com/', ["section.story-wrapper h3"])
