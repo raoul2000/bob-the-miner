@@ -14,13 +14,12 @@ describe("when errors happen", function () {
             .catch(done);
     });
 
-    it("returns UNDEFINED when selector syntax is incorrect", (done) => {
+    it("promise rejected  when selector syntax is incorrect", (done) => {
         bob.work("http://127.0.0.1:8080/blog/index.html", "!")
             .then((result) => {
-                assert.isUndefined(result);
-                done();
+                done("should be rejected");
             })
-            .catch(done);
+            .catch(() => done());
     });
 
     it("promise rejected when request returns 404", (done) => {

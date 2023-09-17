@@ -128,13 +128,11 @@ const minePage = async (page, plan) => {
     return extractedData;
 };
 
-const mineUrl = (url, plan, browser, options) => {
+const mineUrl = async (url, plan, browser, options) => {
     options?.verbose && console.log(`mining : ${url}`);
     return openPage(url, browser, options?.puppeteer?.pageOptions).then((page) => {
         page.on("console", (message) => {
-            if (message.type() === "error") {
-                throw new Error(message.text(), { cause: url });
-            } else if (options?.verbose) {
+            if (options?.verbose) {
                 console.log(`browser (${message.type()}) : ${message.text()}`);
             }
         });
@@ -184,7 +182,7 @@ const postMiningJob = (minedUrl, minedData, options) => {
  * done. The first argument is the mined URL, the second argument is the mined data.
  * - **verbose** (boolean, default = FALSE) - when TRUE, log messages are written to stdout
  * - **puppeteer.launchOptions** (object, default = {headless: "new"} ) - Puppteer  launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
- * - **puppeteer.pageOptions** (object, default = *see Puppeteer link* ) - Puppteer  page goto option object as described in https://pptr.dev/api/puppeteer.page.goto
+ * - **puppeteer.pageOptions** (object, default = {waitUntil: "networkidle0"} ) - Puppteer  page goto option object as described in https://pptr.dev/api/puppeteer.page.goto
  *
  * @param {string|string[]|object} url describes the URL of the page to mine
  * @param {string | string[] | object} plan  the data extraction plan applied to the page
@@ -234,42 +232,11 @@ const run = (url, plan, options) =>
 
 exports.start = run;
 
-/*
-run(
-    {
-        url: "https://www.lanouvellerepublique.fr/a-la-une",
-        plan: { selector: ["h2 a"], type: "@ng-href absolute" },
-    },
-    {
-        article: {
-            title: "#mainArticle > header > rubedo-field > div > div > h1",
-            subHeader:
-                "#content > div.article-body > div.article-body-inner.ng-isolate-scope > div.chapo-wrapper.ng-scope > div > rubedo-field > div > div > div > div > div > p",
-            body: ["rubedo-custom-template > div > p"],
-            imageUrl: {
-                selector:
-                    "#content > div.article-body > div.row > div > div > rubedo-field > div > div > div > div > rubedo-field > div > div > div > div > div > div > figure > nr-image > img",
-                type: "@src absolute",
-            },
-        },
-    },
-    {
-        verbose: true,
-        puppeteer: {
-            headless: false,
-            timeout: 0,
-        },
-    }
-)
+/* run("http://127.0.0.1:8080/blog/index.html", "!")
     .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
     .catch((error) => console.error(error));
-*/
+ */
 /*
-run('https://www.nytimes.com/', ["section.story-wrapper h3"])
-.then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
-.catch((error) => console.error(error));
-*/
-
 run(
     ["http://127.0.0.1:8080/blog/post/2.html", "http://127.0.0.1:8080/blog/post/1.html"],
     { myData: "h2" },
@@ -286,7 +253,7 @@ run(
     }
 )
     .catch((error) => console.error(error));
-
+*/
 /*
 run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
     console.log("result = " + JSON.stringify(result, null, 4))
