@@ -8,13 +8,14 @@ const pLimit = require("p-limit");
  *
  * @param {string} url page url to open in the browser
  * @param {puppeteer.Browser} browser Browser instance
+ * @param {object?} options Puppeteer Page.goto options (see https://pptr.dev/api/puppeteer.page.goto)
  * @returns Promise<puppeteer.Page>
  */
-const openPage = (url, browser) =>
+const openPage = (url, browser, options) =>
     browser
         .newPage()
         .then((page) =>
-            page.goto(url, { waitUntil: "networkidle0" }).then((response) => {
+            page.goto(url, { waitUntil: "networkidle0", ...options }).then((response) => {
                 if (response.status() !== 200) {
                     throw new Error(`page load request returned status ${response.status()}`, { cause: url });
                 }
@@ -129,11 +130,7 @@ const minePage = async (page, plan) => {
 
 const mineUrl = (url, plan, browser, options) => {
     options?.verbose && console.log(`mining : ${url}`);
-    return openPage(url, browser , {
-        waitUntil: 'load',
-        // Remove the timeout
-        timeout: 0
-    }).then((page) => {
+    return openPage(url, browser, options?.puppeteer?.pageOptions).then((page) => {
         page.on("console", (message) => {
             if (message.type() === "error") {
                 throw new Error(message.text(), { cause: url });
@@ -186,8 +183,8 @@ const postMiningJob = (minedUrl, minedData, options) => {
  * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
  * done. The first argument is the mined URL, the second argument is the mined data.
  * - **verbose** (boolean, default = FALSE) - when TRUE, log messages are written to stdout
- * - **puppeteer** (object, default = {headless: "new"} ) - Puppteer launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
- * Use this property if you need to customize underlying Puppeteer processes.
+ * - **puppeteer.launchOptions** (object, default = {headless: "new"} ) - Puppteer  launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
+ * - **puppeteer.pageOptions** (object, default = *see Puppeteer link* ) - Puppteer  page goto option object as described in https://pptr.dev/api/puppeteer.page.goto
  *
  * @param {string|string[]|object} url describes the URL of the page to mine
  * @param {string | string[] | object} plan  the data extraction plan applied to the page
@@ -196,7 +193,7 @@ const postMiningJob = (minedUrl, minedData, options) => {
  */
 const run = (url, plan, options) =>
     puppeteer
-        .launch({ headless: "new", ...options?.puppeteer })
+        .launch({ headless: "new", ...options?.puppeteer?.launchOptions })
         .then((browser) => {
             if (Array.isArray(url) || typeof url === "string") {
                 return Promise.resolve({ urlToMine: url, browser });
@@ -237,26 +234,58 @@ const run = (url, plan, options) =>
 
 exports.start = run;
 
-
+/*
+run(
+    {
+        url: "https://www.lanouvellerepublique.fr/a-la-une",
+        plan: { selector: ["h2 a"], type: "@ng-href absolute" },
+    },
+    {
+        article: {
+            title: "#mainArticle > header > rubedo-field > div > div > h1",
+            subHeader:
+                "#content > div.article-body > div.article-body-inner.ng-isolate-scope > div.chapo-wrapper.ng-scope > div > rubedo-field > div > div > div > div > div > p",
+            body: ["rubedo-custom-template > div > p"],
+            imageUrl: {
+                selector:
+                    "#content > div.article-body > div.row > div > div > rubedo-field > div > div > div > div > rubedo-field > div > div > div > div > div > div > figure > nr-image > img",
+                type: "@src absolute",
+            },
+        },
+    },
+    {
+        verbose: true,
+        puppeteer: {
+            headless: false,
+            timeout: 0,
+        },
+    }
+)
+    .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
+    .catch((error) => console.error(error));
+*/
 /*
 run('https://www.nytimes.com/', ["section.story-wrapper h3"])
 .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
 .catch((error) => console.error(error));
 */
 
-/* run(
+run(
     ["http://127.0.0.1:8080/blog/post/2.html", "http://127.0.0.1:8080/blog/post/1.html"],
     { myData: "h2" },
     {
         indexByUrl: false,
         appendUrlAsProperty: false,
         verbose: true,
+        onMinedData: (url, data) => {
+            console.log(`url = ${url}\n data = `);
+            console.log(JSON.stringify(data, null, 4))
+        },
 
-        puppeteer: { headless: "new" },
+        puppeteer: { launchOptions: { headless: false }, pageOptions: { timeout: 0, waitUntil: "networkidle2" } },
     }
 )
-    .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
-    .catch((error) => console.error(error)); */
+    .catch((error) => console.error(error));
 
 /*
 run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
