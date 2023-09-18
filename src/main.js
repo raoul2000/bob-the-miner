@@ -53,8 +53,9 @@ const minePage = async (page, plan) => {
                 return anchor.href;
             };
 
-            let result;
+            const takeFirst = (arr, n) => n ? arr.slice(0, n-1) : arr;
 
+            let result;
             let valueTypeReader = (el) => el.textContent;
             if (type) {
                 if (typeof type === "string" && type?.startsWith("@") && type.length > 1) {
@@ -69,7 +70,8 @@ const minePage = async (page, plan) => {
                 } else if (typeof type === "object") {
                     // {type: {...}}
                     if (Array.isArray(selector)) {
-                        return [...rootElement.querySelectorAll(selector[0])].map((el) =>
+                        const selectedElements = takeFirst([...rootElement.querySelectorAll(selector[0])], type.max);
+                        return selectedElements.map((el) =>
                             _extractFromPage(type, null, el)
                         );
                     } else {
@@ -83,7 +85,8 @@ const minePage = async (page, plan) => {
                 const el = rootElement.querySelector(selector);
                 result = el && valueTypeReader(el);
             } else if (Array.isArray(selector) && selector.length !== 0) {
-                result = [...rootElement.querySelectorAll(selector[0])].map(valueTypeReader);
+                const selectedElements = takeFirst([...rootElement.querySelectorAll(selector[0])]);
+                result = selectedElements.map(valueTypeReader);
             } else if (selector && typeof selector === "object") {
                 const selectorObj = selector;
                 if (selectorObj.hasOwnProperty("selector")) {
@@ -232,30 +235,6 @@ const run = (url, plan, options) =>
 
 exports.start = run;
 
-/* run("http://127.0.0.1:8080/blog/index.html", "!")
-    .then((result) => console.log("result = " + JSON.stringify(result, null, 4)))
-    .catch((error) => console.error(error));
- */
-/*
-run(
-    ["http://127.0.0.1:8080/blog/post/2.html", "http://127.0.0.1:8080/blog/post/1.html"],
-    { myData: "h2" },
-    {
-        indexByUrl: false,
-        appendUrlAsProperty: false,
-        verbose: true,
-        onMinedData: (url, data) => {
-            console.log(`url = ${url}\n data = `);
-            console.log(JSON.stringify(data, null, 4))
-        },
-
-        puppeteer: { launchOptions: { headless: false }, pageOptions: { timeout: 0, waitUntil: "networkidle2" } },
-    }
-)
-    .catch((error) => console.error(error));
-*/
-/*
-run("http://127.0.0.1:8080/blog/index.html", "!h2").then((result) =>
-    console.log("result = " + JSON.stringify(result, null, 4))
-).catch(error => console.error('ERROR'));
-*/
+run("http://localhost:8080/list.html", { selector: ["li"], max: 2, type: "@attr" })
+    .then((result) => console.log(JSON.stringify(result, null, 4)))
+    .catch(console.error);
