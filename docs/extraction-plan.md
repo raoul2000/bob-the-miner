@@ -6,7 +6,7 @@
 ## A Simple Selector
 
 As we already saw, the most simple extraction plan is a [CSS selector](https://developer.mozilla.org/docs/Web/CSS/CSS_selectors) that is evaluated on the
-page. The extracted value is the text value of the first matching element.
+page. The extracted value is by default the text value of the first matching element.
 
 ```js
 bob.work(
@@ -15,9 +15,9 @@ bob.work(
 );
 // output example = "This is the Title"
 ```
-In this case, the result is a simple string.
+In this case, the result is a simple string which is probably the title of the targeted post.
 
-If you want to extract not only the first matching element, but all of them, just enclose the selector in an array. Th extracted value is an array of strings.
+If you want to extract not only the first matching element, but all of them, just enclose the selector in an array. The extracted value is then an array of strings.
 
 ```js
 bob.work(
@@ -46,7 +46,7 @@ bob.work(
 );
 ```
 
-The object we ask Bob to build has 3 properties
+The object we ask Bob to build has 3 properties. The `title` and `sub-title` of a post are simple strings. The `text` property is an array of string, each one estracted for a paragraph os the post.
 
 
 ```js
