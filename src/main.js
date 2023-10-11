@@ -70,7 +70,7 @@ const minePage = async (page, plan) => {
                 } else if (typeof type === "object") {
                     // {type: {...}}
                     if (Array.isArray(selector)) {
-                        const selectedElements = takeFirst([...rootElement.querySelectorAll(selector[0])], type.max);
+                        const selectedElements = takeFirst([...rootElement.querySelectorAll(selector[0])]);
                         return selectedElements.map((el) =>
                             _extractFromPage(type, null, el)
                         );
@@ -174,8 +174,11 @@ const postMiningJob = (minedUrl, minedData, options) => {
  * Extract data from one or more pages.
  *
  * Available options:
- * - **indexByUrl**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with one key being the mined URL , and the
- * mined data as value.
+ * - **indexByUrl**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with one key being the
+ * mined URL , and the mined data as value.
+ * - **maxUrl** : max number of Url to scrape. This option is enabled when the url to mine is an array or an extraction plan
+ * that returns an array of Url. Be aware that in this last case, there is no garantee the first **maxUrl** will be 
+ * processed as there is no order determined in case of extraction plan
  * - **appendUrlAsProperty**: (boolean, default = FALSE) - when TRUE, each mining job returns an object with 2 properties:
  *   - `_pageUrl` : the URL of the page that was mined
  *   - `_minedData` : the data mined from the page
@@ -184,8 +187,10 @@ const postMiningJob = (minedUrl, minedData, options) => {
  * - **onMinedData** (function, default to console) - function invoked immediately after each mining job is
  * done. The first argument is the mined URL, the second argument is the mined data.
  * - **verbose** (boolean, default = FALSE) - when TRUE, log messages are written to stdout
- * - **puppeteer.launchOptions** (object, default = {headless: "new"} ) - Puppteer  launch option object as described in https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
- * - **puppeteer.pageOptions** (object, default = {waitUntil: "networkidle0"} ) - Puppteer  page goto option object as described in https://pptr.dev/api/puppeteer.page.goto
+ * - **puppeteer.launchOptions** (object, default = {headless: "new"} ) - Puppteer  launch option object as described in
+ * https://pptr.dev/api/puppeteer.puppeteerlaunchoptions
+ * - **puppeteer.pageOptions** (object, default = {waitUntil: "networkidle0"} ) - Puppteer  page goto option object as 
+ * described in https://pptr.dev/api/puppeteer.page.goto
  *
  * @param {string|string[]|object} url describes the URL of the page to mine
  * @param {string | string[] | object} plan  the data extraction plan applied to the page
@@ -209,9 +214,13 @@ const run = (url, plan, options) =>
         .then(({ urlToMine, browser }) => {
             let minigJob;
             if (Array.isArray(urlToMine)) {
+                let urlList = urlToMine;
+                if(typeof options.maxUrl === 'number' && options.maxUrl > 0 ) {
+                    urlList = urlToMine.slice(0,options.maxUrl);
+                }
                 const limit = pLimit(options?.maxPage ?? 10);
                 minigJob = Promise.all(
-                    urlToMine.map((thisUrl) =>
+                    urlList.map((thisUrl) =>
                         limit(() =>
                             mineUrl(thisUrl, plan, browser, options).then((minedData) => {
                                 return postMiningJob(thisUrl, minedData, options);
@@ -234,7 +243,9 @@ const run = (url, plan, options) =>
         });
 
 exports.start = run;
-
+/*
 run("http://localhost:8080/list.html", { selector: ["li"], max: 2, type: "@attr" })
     .then((result) => console.log(JSON.stringify(result, null, 4)))
     .catch(console.error);
+
+    */
