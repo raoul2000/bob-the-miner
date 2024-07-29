@@ -3,7 +3,11 @@
 
 ## Who is Bob ?
 
-*Bob* is a miner, a "web" miner, which means that Bob doesn't digg the ground to extract minerals but the "World Wide Web" to extract data. To be able to do his job correctly, you need to give Bob 2 things : a place to digg and a description of how to extract data. For example, to ask Bob to extract the main title of the New-York Time home page, here is what you should do :
+*Bob* is a miner, a "web" miner, which means that Bob doesn't digg the ground to extract minerals but the "World Wide Web" to extract data. To be able to do his job correctly, you need to give Bob 2 things : 
+- a place to digg
+- a description of how to extract data
+
+For example, to ask Bob to extract the main title of the New-York Time home page, here is what you should do :
 
 ```js
 const bob = require('bob-the-miner');
@@ -26,11 +30,11 @@ Next you'll find a complete description of how to ask Bob to mine according to y
 
 ## Limitations
 
-Bob is respecting private life and will not go digg into page which require authentication or any kind of verification: the web page must be publically available, offering its data to the world, for Bob to start working on it.
+Bob is respecting private life and will not go digg into page which require authentication or any kind of verification: the web page must be publically available, offering its data to the world and to Bob.
 
 ## See Bob in action
 
-If you want to see some examples of what Bob can do, check out the [Example Folder](https://github.com/raoul2000/bob-the-miner/tree/master/examples). There, you'll find commented code that actually works (at least today, ).
+If you want to see some examples of what Bob can do, check out the [Example Folder](https://github.com/raoul2000/bob-the-miner/tree/master/examples). There, you'll find commented code that actually works at the time of publishing (but may be outdated when you read it).
 
 - *nyt-headline* : simply get the headline from the [NYT homepage](https://www.nytimes.com/)
 - *npm-crawler* : result set for a search of "crawler" packages on the [NPM](https://www.npmjs.com/search?q=crawler&ranking=popularity&page=0&perPage=20) website.

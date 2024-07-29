@@ -46,7 +46,7 @@ bob.work(
 );
 ```
 
-The object we ask Bob to build has 3 properties. The `title` and `sub-title` of a post are simple strings. The `text` property is an array of string, each one estracted for a paragraph os the post.
+The object we ask Bob to build has 3 properties. The `title` and `sub-title` of a post are simple strings. The `text` property is an array of string, each one extracted from a paragraph of the post in this page.
 
 
 ```js

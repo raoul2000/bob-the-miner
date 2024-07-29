@@ -37,12 +37,12 @@ Due to the fact that mining job are executed in parallel, **there is no garantee
 ## URL extraction
 
 > spoiler alert ! 
-> This section talks about what an extraction plan is. Please refere to [this chapter](./extraction-plan.md) is you want 
+> This section talks about what an extraction plan is. Please refere to [this chapter](./extraction-plan.md) if you want 
 > to know everything about this subject.
 
 There may be some cases where the addresses of the page you want Bob to mine, are themselves hidden in another page. The typical example is a list of articles displayed in a page (called the *index* page). For each article in the index page, there is a link to the article page, where the full article can be read. Now, if you are interested in all these articles in their complete version, you have to option:
-- manually open the index page and retrieve addresses of all articles, then pass them to Bob as an array 
-- ask Bob to do the job for you !
+- manually open the index page and retrieve addresses of all articles manually, then pass them to Bob as an array 
+- ask Bob to do the job for you
 
 If you provide an extraction plan as the itinerary, Bob will assume that the extracted data **are all addresses to mine** ... and he will do so.
 
