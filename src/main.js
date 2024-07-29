@@ -215,7 +215,7 @@ const run = (url, plan, options) =>
             let minigJob;
             if (Array.isArray(urlToMine)) {
                 let urlList = urlToMine;
-                if(typeof options.maxUrl === 'number' && options.maxUrl > 0 ) {
+                if(options?.maxUrl > 0) {
                     urlList = urlToMine.slice(0,options.maxUrl);
                 }
                 const limit = pLimit(options?.maxPage ?? 10);
