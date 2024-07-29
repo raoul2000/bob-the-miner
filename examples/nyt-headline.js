@@ -2,7 +2,7 @@
 
 const bob = require('../index');
 
-bob.work('https://www.nytimes.com/', ["section.story-wrapper h3"])
+bob.work('https://www.nytimes.com/', ["section.story-wrapper > a > div > div"])
   .then(result => {
     console.log(JSON.stringify(result, null, 4));
   })
