@@ -13,22 +13,30 @@ bob.work(
   "http://hostname/path/post-01.html",
   "div.content > div.post > h1"
 );
-// output example = "This is the Title"
+
 ```
 In this case, the result is a simple string which is probably the title of the targeted post.
 
-If you want to extract not only the first matching element, but all of them, just enclose the selector in an array. The extracted value is then an array of strings.
+```json
+"This is the Post Title"
+```
+
+If you want to extract not only the first matching element, **but all of them**, just enclose the selector in an array. The extracted value is then an array of strings.
 
 ```js
 bob.work(
   "http://hostname/path/post-01.html",
   ["div.content > div.post > h1"]
 );
-// output example = ["This is the Title", "Another title" ]
+```
+Result : 
+```json
+["This is the Title", "Another title" ]
 ```
 
+
 But ok, this is quite basic right ? Bob can also provide a complete object if you tell him how to
-do. We will see that on the next chapter.
+do. We will see that on the next section.
 
 ## A Complex Extraction Plan
 
@@ -46,15 +54,17 @@ bob.work(
 );
 ```
 
-The object we ask Bob to build has 3 properties. The `title` and `sub-title` of a post are simple strings. The `text` property is an array of string, each one extracted from a paragraph of the post in this page.
+The object we asked Bob to build has 3 properties. The `title` and `sub-title` of a post are simple strings. The `text` property is an array of strings, each one extracted from a paragraph of the post in this page.
 
+
+The next example should be applied on a HTML page that contains several posts : 
 
 ```js
 bob.work(
-  "http://hostname/path/post-01.html",
+  "http://hostname/path/index.html",
   {
     "postList": {
-      "selector": "div.content > div.post",
+      "selector": ["div.content > div.post"],
       "type": {
         "title": '.post-header > h3.title'
         "body" :  'div.excerpt'
@@ -72,185 +82,65 @@ an *array* (that's its *type*) that contains objects representings posts. Each o
 Here is how the result could look like :
 
 ```json
-{
-  "source" : "http://hostname/path/post-01.html",
-  "data"   : {
-    "postList" : [
-      { "title" : " some title", "body" : "lorem ipsum etc ..."},
-      { "title" : " some other title", "body" : "let it be etc."},
-      { "title" : " the last title", "body" : "Bob is in da place !"}
-    ]
-  }
-}
+[
+  { "title" : " some title", "body" : "lorem ipsum etc ..."},
+  { "title" : " some other title", "body" : "let it be etc."},
+  { "title" : " the last title", "body" : "Bob is in da place !"}
+]
 ```
 
-An object is made of **properties**, and we are going to see now how to describe them to Bob.
+> One thing to note in this example is that the CSS selector of *title* and *body* properties are **relative to the parent's selector** (in this case `div.content > div.post`). 
 
-For a given *propertyName* its definition can be provided as an object :
+## Value Type
 
-```
-{
-  "propertyName" : {
-    "selector" : "jquery selector",
-    "type" :
-       "text"  |  "html"  |  "@attributeName"  |  { object } |
-      ["text"] | ["html"] | ["@attributeName"] | [{ object }]
-  }
-}
-```
+Up to now we have only been extracting the text content of the selected elements hidding somewhere in HTML page. But we can also ask Bob to extract **attributes values**. 
 
-If the property value is a string, then it is assumed to be the selector. If it's an array, it must contain
-one single item assumed to be the selector. The property type is an array.
+Yes this is possible, look : 
 
-The *selector* value is a JQuery selector.
-
-The *type* value is describing how to get a value based on the selected element.
-
-If no **type** is provided, **text** is default.
-
-### Primitive Type Property
-
-Extracts the title of a post. Only the first matching result is extracted.
-
-```json
-{
-  "title" : {
-    "selector" : "body > div.post > h1",
-  }
-}
-```
-In short notation :
-```json
-{
-  "title" : "body > div.post > h1"
-}
-```
-
-The result :
-```json
-{
-  "title" : "Title of the first matching result"
-}
-```
-
-### Array Property
-
-Create an object with three properties : *title* and *paragraphs* and *addresses*.
-- *title* : text of the **first** selected element
-- *paragraphs* : array of text of **all** selected elements
-- *adresses* : array of *href* attribute values for all selected elements
-
-```json
-{
-  "title" : {
-    "selector" : "body > div.post > h1",
-    "type" : "text"
-  },
-  "paragraphs" : {
-    "selector" : "body > div.post > p",
-    "type" : ["text"]
-  },
-  "addresses" : {
-    "selector" : "body > div.post > a",
-    "type" : ["@href"]
-  }
-}
-```
-
-The Result :
-
-```json
-{
-  "title" : "this is the main title",
-  "paragraphs" : ["this is the first paragraphs", "this is the second paragraph"],
-  "addresses" : [
-    "http://hostname/path/to/ressource",
-    "relative/path"
-  ]
-}
-```
-
-Using the short notation it is possible to extract *title* and *paragraphs* :
-```json
-{
-  "title"      : "body > div.post > h1",
-  "paragraphs" : ["body > div.post > p"]
-}
-```
-This is possible because the default type *text* is appropriate for these 2 properties. The *addresses* property can't be extract using the short notation.
-
-### Single Object
-
-Let's extract the first post and retrieve its title and list of paragraphs. Note that the `selector` of *title* and *text* properties is **relative to the parent selector** (here : `body > div.list > div.post`).
-
-```json
-{
-  "post" : {
-    "selector" : "body > div.list > div.post",
-    "type"    : {
-      "title" : {
-        "selector" : "h1"
-      },
-      "text"  : {
-        "selector" : "div.body > p",
-        "type" : ["text"]
-      }
+```js
+bob.work(
+  "http://hostname/path/index.html",
+  {
+    "some-classes": {
+      "selector": ["div.content > div"],
+      "type": "@class"
     }
   }
-}
+);
 ```
 
-The result :
+This extraction plan asks Bob to select all elements that match the `div.content > div` CSS selector, and for each one of them, read the value of the `class` attribute.
+
+The extracted data could look like this : 
 
 ```json
-{
-  "post" : {
-    "title" : "this is the title",
-    "text" : [
-      "This is the first paragraph of the text",
-      "And here is the second paragraph"
-    ]
-  }
-}
-```
-### Array Of Object
-
-Now extracts all posts (title and text) : it's *almost* the same as above but this time, we enclose the object definition into an array :
-
-```json
-{
-  "post" : {
-    "selector" : "body > div.list > div.post",
-    "type"    : [{
-      "title" : {
-        "selector" : "h1"
-      },
-      "text"  : {
-        "selector" : "div.body > p",
-        "type" : ["text"]
-      }
-    }]
-  }
-}
+["post", "post"]  
 ```
 
-The result :
+Ok, this is not super useful (who knows ?), but imagine that you want to extract a list of URL from anchors elements ? ... and imagine you then want to use this list of URL as an Itinerary from where to extract real data. This is exactly what the [URL extraction](./itinerary.md#url-extraction) section is all about.
 
-```json
-{
-  "post" : [{
-    "title" : "First post : this is the title",
-    "text" : [
-      "This is the first paragraph of the text",
-      "And here is the second paragraph"
-    ]
-  },
+Here is the example again :
+
+```js
+bob.work(
+  "http://hostname/path/index.html",
   {
-    "title" : "Second Post : this is the title",
-    "text" : [
-      "This is the first paragraph of the text",
-      "And here is the second paragraph"
-    ]
-  }]
-}
+    selector: ["div.post a"],
+    type: "@href absolute",
+  }
+);
 ```
+
+As you can see, the `plan` property (our extraction plan) is designed to extract the **absolute URL** defined by the `href` attribute for all element that match the `div.post a` CSS selector.
+
+The result could be something like this : 
+
+```json
+[
+  "http://hostname/post1/page.html", 
+  "http://hostname/post2/page.html", 
+  "http://hostname/post3/page.html"
+]
+```
+
+Of course, if you don't add the **absolute** modifier, Bob will just gives you what was found in the attribute value.

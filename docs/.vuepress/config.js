@@ -7,7 +7,8 @@ module.exports = {
       '/',
       ['/intro', 'Introduction'],
       ['/itinerary', 'Itinerary'],
-      ['/extraction-plan', 'Extraction Plan']
+      ['/extraction-plan', 'Extraction Plan'],
+      ['/options', 'More Options']
     ],
     nav: [
       { text: 'Github', link: 'https://github.com/raoul2000/bob-the-miner' }

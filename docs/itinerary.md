@@ -28,7 +28,7 @@ bob.work(
 
 In this case the result is an array where each item is the result of data extraction on one adress.  :
 
-```json
+```js
 [ result, result, ... ]
 ```
 
@@ -47,17 +47,18 @@ There may be some cases where the addresses of the page you want Bob to mine, ar
 If you provide an extraction plan as the itinerary, Bob will assume that the extracted data **are all addresses to mine** ... and he will do so.
 
 Let's see that on an example:
+
 ```js
-        bob.work(
-            {
-                url: "http://hostname/blog/index.html",
-                plan: {
-                    selector: ["div.post a"],
-                    type: "@href absolute",
-                },
-            },
-            "h1"
-        )
+bob.work(
+  {
+    url: "http://hostname/blog/index.html",
+    plan: {
+        selector: ["div.post a"],
+        type: "@href absolute",
+    },
+  },
+  "h1"
+)
 ```
 Here we ask bob to open the page a `http://hostname/blog/index.html` and extract all addresses according to the *extraction plan* provided. Then, Bob must open each pages for each one of these addresses and mine the title of the article (enclosed by the `h1` element).
 The way to define an *extraction plan* is explained in [this chapter](./extraction-plan.md) but if you know a little about CSS selectors syntax

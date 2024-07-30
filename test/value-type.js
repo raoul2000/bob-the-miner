@@ -49,4 +49,12 @@ describe("extract typed values", function () {
             })
             .catch(done);
     });
+    it("returns several relative URL", (done) => {
+        bob.work("http://127.0.0.1:8080/blog/index.html", { selector: ["a"], type: "@href" })
+            .then((result) => {
+                assert.deepEqual(result, ["post/1.html", "post/2.html", "post/NOT_FOUND.html"]);
+                done();
+            })
+            .catch(done);
+    });
 });

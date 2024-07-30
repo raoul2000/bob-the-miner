@@ -12,8 +12,8 @@ For example, to ask Bob to extract the main title of the New-York Time home page
 ```js
 const bob = require('bob-the-miner');
 
-bob.work('https://www.nytimes.com/', "h1.story-heading > a")
-  .then(result => { console.log(result.data)}) // display extracted data
+bob.work('https://www.my-cool-website.com/', "h1.story-heading > a")
+  .then(result => { console.log(result)}) // display extracted data
   .catch(err   => { consoler.err(err)})
 ```
 
