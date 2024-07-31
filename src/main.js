@@ -243,9 +243,4 @@ const run = (url, plan, options) =>
         });
 
 exports.start = run;
-/*
-run("http://localhost:8080/list.html", { selector: ["li"], max: 2, type: "@attr" })
-    .then((result) => console.log(JSON.stringify(result, null, 4)))
-    .catch(console.error);
 
-    */
