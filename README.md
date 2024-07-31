@@ -21,24 +21,14 @@ npm install
 
 # Test
 
-Test are based on [Mocha](https://mochajs.org/) which is supposed to be installed *globally* and accessible on your environment.
-If you need to install Mocha :
+First start the test local server :
 
-```
-npm install --global mocha
-```
-
-To check it is installed, display its version number:
-```
-> mocha --version
-2.4.5            
-```
-Now you are ready to run tests. First start the test local server :
 ```
 npm run server
 ```
 
 Then open another shell run the tests :
+
 ```
 npm test
 ```
@@ -50,11 +40,13 @@ npm test
 ```
 npm run nodejs-news
 ```
+
 - extract headlines from the [New-York Times](https://www.nytimes.com/) website
 
 ```
 npm run nyt-headline
 ```
+
 - extract packages list from [NPM](https://www.npmjs.com) website
 
 ```
@@ -76,6 +68,7 @@ npm run docs:dev
 
 
 To build the documentation :
+
 ```
 npm run docs:build
 ```

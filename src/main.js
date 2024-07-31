@@ -242,5 +242,5 @@ const run = (url, plan, options) =>
             throw error;
         });
 
-exports.start = run;
+exports.run = run;
 

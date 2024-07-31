@@ -3,5 +3,5 @@
 const main = require('./src/main');
 
 module.exports = {
-  "work" : main.start
+  "work" : main.run
 };

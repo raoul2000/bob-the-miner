@@ -13,9 +13,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "nyt-headline": "node examples/nyt-headline.js",
-    "npm-crawler": "node examples/npm-crawler.js",
-    "my-blog": "node examples/my-blog.js > ./examples/my-blog.json",
-    "my-blog-reloaded": "node examples/my-blog-reloaded.js > ./examples/my-blog-reloaded.json"
+    "npm-crawler": "node examples/npm-crawler.js"
   },
   "keywords": [
     "scraper",

@@ -1,7 +1,7 @@
 
 # Options
 
-> *Options* is when you give extra instructions to bob
+> *Options* is when you give extra instructions to bob on how to do his job
 
 ## Overview
 
